@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Station 1</title>
+  <script>
+    window.onload = function() {
+      const stationNumber = 1; // Change this number for each station
+      // Redirect to display.html with the station number as a query parameter
+      const url = new URL("display.html", window.location.href);
+      url.searchParams.set("station", stationNumber);
+      window.location.href = url;
+    };
+  </script>
+</head>
+<body>
+  <!-- Content is optional, as it will redirect on load -->
+</body>
+</html>

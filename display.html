@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Display Puzzle</title>
+  <script src="puzzles.js"></script>
+  <script>
+    function displayPuzzle() {
+      // Retrieve station number from URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const stationNumber = urlParams.get("station");
+
+      // Look up the puzzle based on the station number
+      const selectedPuzzle = puzzles[stationNumber];
+
+      if (selectedPuzzle) {
+        // Display puzzle details
+        document.getElementById("puzzleDetails").textContent = `Puzzle ${selectedPuzzle.number}: ${selectedPuzzle.phrase}\nClue: ${selectedPuzzle.clue}`;
+        document.getElementById("checkButton").setAttribute("data-answer", selectedPuzzle.answer); // Store the correct answer
+      } else {
+        document.getElementById("puzzleDetails").textContent = "Puzzle not found.";
+      }
+    }
+
+    function checkAnswer() {
+      const userAnswer = document.getElementById("answerInput").value.trim().toLowerCase();
+      const correctAnswer = document.getElementById("checkButton").getAttribute("data-answer");
+
+      const result = userAnswer === correctAnswer ? "Correct!" : "Try Again!";
+      document.getElementById("result").textContent = result;
+    }
+
+    window.onload = displayPuzzle;
+  </script>
+</head>
+<body>
+  <h1>Puzzle</h1>
+  <p id="puzzleDetails"></p>
+
+  <h2>Your Answer:</h2>
+  <input type="text" id="answerInput" placeholder="Enter your answer">
+  <button id="checkButton" onclick="checkAnswer()">Submit</button>
+  
+  <p id="result"></p>
+</body>
+</html>
