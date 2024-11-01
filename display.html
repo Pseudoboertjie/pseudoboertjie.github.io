@@ -27,7 +27,7 @@
       const userAnswer = document.getElementById("answerInput").value.trim().toLowerCase();
       const correctAnswer = document.getElementById("checkButton").getAttribute("data-answer");
 
-      const result = userAnswer === correctAnswer ? "Correct!" : "Try Again!";
+      const result = userAnswer === correctAnswer ? "Correct!: Your clue is '117 Kessel'" : "Try Again!: keyboard";
       document.getElementById("result").textContent = result;
     }
 
