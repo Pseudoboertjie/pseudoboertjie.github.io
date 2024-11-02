@@ -8,7 +8,7 @@
     window.onload = function() {
       const stationNumber = 1; // Change this number for each station
       // Redirect to display.html with the station number as a query parameter
-      const url = new URL("display.html", window.location.href);
+      const url = new URL("display", window.location.href);
       url.searchParams.set("station", stationNumber);
       window.location.href = url;
     };
