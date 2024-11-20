@@ -86,25 +86,19 @@ social-network-links:
 # --- General options --- #
 ###########################
 
-# Select which social network share links to show in posts
-# share-links-active:
-#   twitter: true
-#   facebook: true
-#   linkedin: true
-#   vk: false
 
 # How to display the link to your website in the footer
 # Remove this if you don't want a link in the footer
-# url-pretty: "MyWebsite.com"
+url-pretty: "https://pseudoboertjie.github.io/"
 
 # Add the website title to the title of every page
 title-on-all-pages: true
 
 # Excerpt word length - Truncate the excerpt of each post on the feed page to the specified number of words
-excerpt_length: 50
+# excerpt_length: 50
 
 # Whether or not to show an excerpt for every blog post in the feed page
-feed_show_excerpt: true
+# feed_show_excerpt: true
 
 # Whether or not to show a list of tags below each post preview in the feed page
 feed_show_tags: true
@@ -129,16 +123,16 @@ navbar-var-length: false
 
 # Personalize the colours in your website. Colour values can be any valid CSS colour
 page-col: "#111111"
-text-col: "#FF5555"
-link-col: "#FF5555"
-hover-col: "#FF6F6F"
+text-col: "#9c13ff"
+link-col: "#9c13ff"
+hover-col: "#BE72F7"
 navbar-col: "#1A1A1A"
 navbar-text-col: "#F0F0F0"
 navbar-border-col: "#333333"
 footer-col: "#1A1A1A"
 footer-text-col: "#777777"
-footer-link-col: "#FF5555"
-footer-hover-col: "#FF6F6F"
+footer-link-col: "#9c13ff"
+footer-hover-col: "#BE72F7"
 
 
 # Alternatively, the navbar, footer, and page background can be set to an image
