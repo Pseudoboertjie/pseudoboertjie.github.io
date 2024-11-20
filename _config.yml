@@ -64,7 +64,7 @@ social-network-links:
 #  snapchat: deanat78
 #  instagram: deanat78
 #  spotify: yourname
- # telephone: +14159998888
+ telephone: +14159998888
 #  steam: deanat78
 #  twitch: yourname
 #  yelp: yourname
@@ -90,11 +90,11 @@ rss-description: This website is a virtual proof that I'm awesome
 ###########################
 
 # Select which social network share links to show in posts
-# share-links-active:
-#   twitter: true
-#   facebook: true
-#   linkedin: true
-#   vk: false
+share-links-active:
+  twitter: true
+  facebook: true
+  linkedin: true
+  vk: false
 
 # How to display the link to your website in the footer
 # Remove this if you don't want a link in the footer
