@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elo Rating System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Elo Rating System</h1>
+
+    <h2>Player Rankings</h2>
+    <table id="playerTable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Rating</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <h2>Match History</h2>
+    <table id="matchTable">
+        <thead>
+            <tr>
+                <th>Winner</th>
+                <th>Loser</th>
+                <th>New Ratings</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <h2>Add Match Result</h2>
+    <p>Note: This updates the ratings locally, but you must manually edit `players.json` on GitHub.</p>
+    <form id="matchForm">
+        <label for="winner">Winner ID:</label>
+        <input type="text" id="winner" required>
+        
+        <label for="loser">Loser ID:</label>
+        <input type="text" id="loser" required>
+
+        <button type="submit">Calculate New Ratings</button>
+    </form>
+
+    <script src="script.js"></script>
+</body>
+</html>
