@@ -1,62 +1,80 @@
-// Elo Rating Calculation Function
-function calculateElo(winnerRating, loserRating) {
-    const k = 32; // Elo K-factor
-    const expectedWin = 1 / (1 + Math.pow(10, (loserRating - winnerRating) / 400));
-    const newWinnerRating = Math.round(winnerRating + k * (1 - expectedWin));
-    const newLoserRating = Math.round(loserRating + k * (0 - (1 - expectedWin)));
-    return { newWinnerRating, newLoserRating };
+const GITHUB_USERNAME = "pseudoboertjie";  
+const REPO_NAME = "elo-rating-system";  
+const FILE_PATH = "players.json";  
+const TOKEN = "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"; // ⚠️ NEVER expose this in frontend!
+
+// Function to get the latest file content from GitHub
+async function fetchFileContent() {
+    const url = `https://api.github.com/repos/${GITHUB_USERNAME}/${REPO_NAME}/contents/${FILE_PATH}`;
+    const response = await fetch(url, {
+        headers: {
+            "Authorization": `token ${TOKEN}`
+        }
+    });
+    return await response.json();
 }
 
-// Fetch and Display Players
-fetch('players.json')
-    .then(response => response.json())
-    .then(players => {
-        const tableBody = document.querySelector("#playerTable tbody");
-        tableBody.innerHTML = "";
-        players.sort((a, b) => b.rating - a.rating).forEach(player => {
-            const row = `<tr><td>${player.id}</td><td>${player.name}</td><td>${player.rating}</td></tr>`;
-            tableBody.innerHTML += row;
-        });
+// Function to update the JSON file on GitHub
+async function updateJSONFile(updatedContent) {
+    const fileData = await fetchFileContent();
+    const newContent = btoa(JSON.stringify(updatedContent, null, 2)); // Encode JSON to base64
+
+    const response = await fetch(`https://api.github.com/repos/${GITHUB_USERNAME}/${REPO_NAME}/contents/${FILE_PATH}`, {
+        method: "PUT",
+        headers: {
+            "Authorization": `token ${TOKEN}`,
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            message: "Updated player ratings",
+            content: newContent,
+            sha: fileData.sha // Required for updating an existing file
+        })
     });
 
-// Fetch and Display Matches
-fetch('matches.json')
-    .then(response => response.json())
-    .then(matches => {
-        const matchTable = document.querySelector("#matchTable tbody");
-        matchTable.innerHTML = "";
-        matches.forEach(match => {
-            const row = `<tr>
-                <td>${match.winner}</td>
-                <td>${match.loser}</td>
-                <td>${match.winner_new_rating} / ${match.loser_new_rating}</td>
-            </tr>`;
-            matchTable.innerHTML += row;
-        });
-    });
+    if (response.ok) {
+        alert("Players.json updated successfully!");
+        location.reload(); // Refresh to show updated ratings
+    } else {
+        alert("Failed to update players.json");
+    }
+}
 
-// Handle Match Result Submission
+// Function to update player ratings
+async function updateRatings(winnerId, loserId) {
+    let players = await fetch("players.json").then(res => res.json());
+
+    let winner = players.find(p => p.id === winnerId);
+    let loser = players.find(p => p.id === loserId);
+
+    if (!winner || !loser) {
+        alert("Invalid Player IDs");
+        return;
+    }
+
+    const { newWinnerRating, newLoserRating } = calculateElo(winner.rating, loser.rating);
+    winner.rating = newWinnerRating;
+    loser.rating = newLoserRating;
+
+    // Save updated JSON file to GitHub
+    updateJSONFile(players);
+}
+
+// Attach event listener to form
 document.getElementById("matchForm").addEventListener("submit", function(event) {
     event.preventDefault();
-
     const winnerId = document.getElementById("winner").value;
     const loserId = document.getElementById("loser").value;
-
-    fetch('players.json')
-        .then(response => response.json())
-        .then(players => {
-            const winner = players.find(p => p.id === winnerId);
-            const loser = players.find(p => p.id === loserId);
-
-            if (!winner || !loser) {
-                alert("Invalid Player IDs");
-                return;
-            }
-
-            // Calculate new ratings
-            const { newWinnerRating, newLoserRating } = calculateElo(winner.rating, loser.rating);
-            alert(`New Ratings:\n${winner.name}: ${newWinnerRating}\n${loser.name}: ${newLoserRating}\n\nManually update players.json on GitHub!`);
-
-            // This does NOT save automatically - must be updated manually on GitHub.
-        });
+    updateRatings(winnerId, loserId);
 });
+
+// Elo rating calculation
+function calculateElo(winnerRating, loserRating, kFactor = 32) {
+    const expectedWinner = 1 / (1 + Math.pow(10, (loserRating - winnerRating) / 400));
+    const expectedLoser = 1 / (1 + Math.pow(10, (winnerRating - loserRating) / 400));
+
+    return {
+        newWinnerRating: Math.round(winnerRating + kFactor * (1 - expectedWinner)),
+        newLoserRating: Math.round(loserRating + kFactor * (0 - expectedLoser))
+    };
+}
