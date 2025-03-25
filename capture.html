@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capture Match</title>
+    <style>
+        form {
+            margin-top: 20px;
+        }
+        label, input, button {
+            display: block;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Capture Match</h1>
+    <form id="captureForm">
+        <label for="winnerInput">Winner:</label>
+        <input type="text" id="winnerInput" name="winner" required>
+
+        <label for="loserInput">Loser:</label>
+        <input type="text" id="loserInput" name="loser" required>
+
+        <label for="eventInput">Event:</label>
+        <input type="text" id="eventInput" name="event" required>
+
+        <button type="submit">Capture</button>
+    </form>
+
+    <script>
+        document.getElementById('captureForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const winner = document.getElementById('winnerInput').value;
+            const loser = document.getElementById('loserInput').value;
+            const eventValue = document.getElementById('eventInput').value;
+
+            // Fetch current matches data
+            fetch('matches.json')
+                .then(response => response.json())
+                .then(matches => {
+                    const newMatchId = matches.length + 1; // Increment match ID
+
+                    // Add new match to matches.json
+                    const newMatch = {
+                        match_id: newMatchId,
+                        winner: winner,
+                        loser: loser,
+                        event: eventValue
+                    };
+                    matches.push(newMatch);
+
+                    // Update matches.json with new data
+                    fetch('matches.json', {
+                        method: 'PUT', // or 'POST'
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(matches),
+                    })
+                    .then(response => response.json())
+                    .then(() => {
+                        alert(`Match captured successfully! Match ID: ${newMatchId}`);
+                        document.getElementById('captureForm').reset(); // Reset form fields
+                        
+                        // Redirect to matches.html after capture
+                        window.location.href = 'matches.html';
+                    })
+                    .catch(error => console.error('Error updating matches:', error));
+                })
+                .catch(error => console.error('Error fetching matches:', error));
+        });
+    </script>
+</body>
+</html>
