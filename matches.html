@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matches</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Matches</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Match ID</th>
+                <th>Winner</th>
+                <th>Loser</th>
+                <th>Event</th>
+            </tr>
+        </thead>
+        <tbody id="matchesTableBody">
+            <!-- Table rows will be dynamically added here -->
+        </tbody>
+    </table>
+
+    <script>
+        // Fetch matches data from matches.json
+        fetch('matches.json')
+            .then(response => response.json())
+            .then(matches => {
+                const matchesTableBody = document.getElementById('matchesTableBody');
+                matches.forEach(match => {
+                    matchesTableBody.innerHTML += `
+                        <tr>
+                            <td>${match.match_id}</td>
+                            <td>${match.winner}</td>
+                            <td>${match.loser}</td>
+                            <td>${match.event}</td>
+                        </tr>
+                    `;
+                });
+            })
+            .catch(error => console.error('Error fetching matches:', error));
+    </script>
+</body>
+</html>

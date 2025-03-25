@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Player Ratings</title>
+    <style>
+        table {
+            width: 50%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Player Ratings</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Maties ID</th>
+                <th>Name</th>
+                <th>Rating</th>
+            </tr>
+        </thead>
+        <tbody id="ratingsTableBody">
+            <!-- Table rows will be dynamically added here -->
+        </tbody>
+    </table>
+
+    <script>
+        // Fetch player ratings data from players.json
+        fetch('players.json')
+            .then(response => response.json())
+            .then(players => {
+                const ratingsTableBody = document.getElementById('ratingsTableBody');
+                players.forEach(player => {
+                    ratingsTableBody.innerHTML += `
+                        <tr>
+                            <td>${player.maties_id}</td>
+                            <td>${player.name}</td>
+                            <td>${player.rating}</td>
+                        </tr>
+                    `;
+                });
+            })
+            .catch(error => console.error('Error fetching player ratings:', error));
+    </script>
+</body>
+</html>
